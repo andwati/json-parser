@@ -3,7 +3,7 @@
 ## TODO
 
 ### Parsing Basics
-- [ ] Recognize JSON syntax elements
+- Recognize JSON syntax elements
  - [ ] objects
  - [ ] arrays
  - [ ] strings
