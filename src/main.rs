@@ -104,14 +104,17 @@ fn parse_json_object(content: &str) -> Result<(), String> {
                         _ => return Err("Expected ':' after key".into()),
                     }
                 }
-                // If no string key and we're not at the start, it must be a closing brace
                 Some(Token::CurlyClose) => break,
                 _ => return Err("Expected string key or '}'".into()),
             }
 
 
             match iter.next() {
-                Some(Token::Comma) => continue,
+                Some(Token::Comma) => {
+                    if let Some(Token::CurlyClose) = iter.peek() {
+                        return Err("Trailing comma before '}' is not allowed".into());
+                    }
+                }
                 Some(Token::CurlyClose) => break,
                 _ => return Err("Expected ',' or '}' after value".into()),
             }
