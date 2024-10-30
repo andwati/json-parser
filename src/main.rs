@@ -1,6 +1,5 @@
-use std::env;
-use std::fs;
 use std::process::exit;
+use std::{env, fs};
 
 #[derive(Debug)]
 enum Token {
@@ -18,19 +17,35 @@ fn main() {
     }
 
     let file_path = &args[1];
+    // match fs::read_to_string(file_path) {
+    //     Ok(content) => {
+    //         if is_valid_json(&content) {
+    //             println!("Valid JSON");
+    //             exit(0);
+    //         } else {
+    //             eprintln!("Invalid JSON");
+    //             exit(1);
+    //         }
+    //     }
+    //
+    //     Err(_) => {
+    //         eprintln!("Unable to read file");
+    //         exit(1);
+    //     }
+    // }
     match fs::read_to_string(file_path) {
-        Ok(content) => {
-            if is_valid_json(&content) {
+        Ok(content) => match parse_json_object(&content) {
+            Ok(_) => {
                 println!("Valid JSON");
                 exit(0);
-            } else {
-                eprintln!("Invalid JSON");
+            }
+            Err(err) => {
+                eprintln!("Invalid JSON: {}", err);
                 exit(1);
             }
-        }
-
+        },
         Err(_) => {
-            eprintln!("Unable to read file");
+            eprintln!("Failed to read file");
             exit(1);
         }
     }
@@ -69,4 +84,40 @@ fn tokenize(content: &str) -> Result<Vec<Token>, String> {
         i += 1;
     }
     Ok(tokens)
+}
+fn parse_json_object(content: &str) -> Result<(), String> {
+    let tokens = tokenize(content)?;
+
+    let mut iter = tokens.iter().peekable();
+    if let Some(Token::CurlyOpen) = iter.next() {
+        loop {
+            match iter.next() {
+                Some(Token::String(key)) => {
+                    match iter.next() {
+                        Some(Token::Colon) => {
+                            if let Some(Token::String(value)) = iter.next() {
+                                println!("Parsed key-value pair: {}: {}", key, value);
+                            } else {
+                                return Err("Expected string value after ':'".into());
+                            }
+                        }
+                        _ => return Err("Expected ':' after key".into()),
+                    }
+                }
+                // If no string key and we're not at the start, it must be a closing brace
+                Some(Token::CurlyClose) => break,
+                _ => return Err("Expected string key or '}'".into()),
+            }
+
+
+            match iter.next() {
+                Some(Token::Comma) => continue,
+                Some(Token::CurlyClose) => break,
+                _ => return Err("Expected ',' or '}' after value".into()),
+            }
+        }
+        Ok(())
+    } else {
+        Err("Expected '{' at beginning".into())
+    }
 }
