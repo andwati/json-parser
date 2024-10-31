@@ -2,6 +2,8 @@
 pub enum Token {
     CurlyOpen,
     CurlyClose,
+    SquareOpen,
+    SquareClose,
     Colon,
     Comma,
     String(String),
@@ -20,6 +22,8 @@ pub fn tokenize(content: &str) -> Result<Vec<Token>, String> {
         match chars[i] {
             '{' => tokens.push(Token::CurlyOpen),
             '}' => tokens.push(Token::CurlyClose),
+            '[' => tokens.push(Token::SquareOpen),
+            ']' => tokens.push(Token::SquareClose),
             ':' => tokens.push(Token::Colon),
             ',' => tokens.push(Token::Comma),
             '"' => {
