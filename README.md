@@ -3,24 +3,23 @@
 ## TODO
 
 ### Parsing Basics
- - [ ] objects
- - [ ] arrays
- - [ ] strings
- - [ ] numbers
- - [ ] booleans
- - [ ] null
- - [ ] Handle whitespace and comments
+ - [x] objects
+ - [x] arrays
+ - [x] strings
+ - [x] numbers
+ - [x] booleans
+ - [x] null
+ - [x] Handle whitespace and comments
 ### Support for different data types
- - [ ] Strings (including escaping mechanisms for quotes, backslashes, etc.)
- - [ ] Numbers (integers, floating-point)
- - [ ] Booleans (true, false)
-l
- - [ ] Arrays (delimited by square brackets, elements separated by commas)
- - [ ] Objects (delimited by curly braces, key-value pairs with colon separator)
+ - [x] Strings (including escaping mechanisms for quotes, backslashes, etc.)
+ - [x] Numbers (integers, floating-point)
+ - [x] Booleans (true, false)
+ - [x] Arrays (delimited by square brackets, elements separated by commas)
+ - [x] Objects (delimited by curly braces, key-value pairs with colon separator)
 
 ### Error Handling
- - [ ] Report syntax errors (unexpected characters, missing delimiters)
- - [ ] Provide informative error messages for debugging
+ - [x] Report syntax errors (unexpected characters, missing delimiters)
+ - [x] Provide informative error messages for debugging
  - [ ] Optionally consider returning a Result type with specific error structs
 ### Value Representation
 Define Rust data structures to represent parsed JSON values:
